@@ -90,6 +90,9 @@ int main(int argc, char** argv)
             return -1;
         }
 
+        resourceManager.LoadTexture("DefaultTexture", "res/textures/example.png");
+        
+
         GLuint points_vbo = 0;
         glGenBuffers(1, &points_vbo);
         glBindBuffer(GL_ARRAY_BUFFER, points_vbo);
