@@ -30,7 +30,7 @@ namespace Renderer {
 
 		bool CreateShader(const std::string& source, const GLenum shaderType, GLuint& shaderID);
 
-		bool m_isCompiled = false;
-		GLuint m_ID = 0; 
+		bool m_isCompiled_ = false;
+		GLuint m_ID_ = 0; 
 	};
 }//end namespace Rederer

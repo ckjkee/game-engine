@@ -5,21 +5,21 @@
 namespace Renderer {
 	ShaderProgram::ShaderProgram(ShaderProgram&& other) noexcept
 	{
-		m_ID = std::move(other.m_ID);
-		m_isCompiled = std::move(other.m_isCompiled);
+		m_ID_ = std::move(other.m_ID_);
+		m_isCompiled_ = std::move(other.m_isCompiled_);
 
-		other.m_ID = 0;
-		other.m_isCompiled = false;
+		other.m_ID_ = 0;
+		other.m_isCompiled_ = false;
 	}
 
 	ShaderProgram& ShaderProgram::operator=(ShaderProgram&& other) noexcept
 	{
-		glDeleteProgram(m_ID);
-		m_ID = std::move(other.m_ID);
-		m_isCompiled = std::move(other.m_isCompiled);
+		glDeleteProgram(m_ID_);
+		m_ID_ = std::move(other.m_ID_);
+		m_isCompiled_ = std::move(other.m_isCompiled_);
 
-		other.m_ID = 0;
-		other.m_isCompiled = false;
+		other.m_ID_ = 0;
+		other.m_isCompiled_ = false;
 
 		return *this;
 	}
@@ -40,24 +40,24 @@ namespace Renderer {
 			glDeleteShader(vertexShaderID);
 			return;
 		}
-		m_ID = glCreateProgram();
-		glAttachShader(m_ID, vertexShaderID);
-		glAttachShader(m_ID, fragmentShaderID);
-		glLinkProgram(m_ID);
+		m_ID_= glCreateProgram();
+		glAttachShader(m_ID_, vertexShaderID);
+		glAttachShader(m_ID_, fragmentShaderID);
+		glLinkProgram(m_ID_);
 
 
 		GLint success;
-		glGetProgramiv(m_ID, GL_LINK_STATUS, &success);
+		glGetProgramiv(m_ID_, GL_LINK_STATUS, &success);
 		if (!success)
 		{
 			GLchar infolog[1024];
-			glGetShaderInfoLog(m_ID, 1024, nullptr, infolog);
+			glGetShaderInfoLog(m_ID_, 1024, nullptr, infolog);
 			std::cerr << "ERROR::SHADER: Link time error:\n" << infolog << std::endl;
 			
 		}
 		else
 		{
-			m_isCompiled = true;
+			m_isCompiled_ = true;
 		}
 
 		glDeleteShader(vertexShaderID);
@@ -68,17 +68,17 @@ namespace Renderer {
 
 	ShaderProgram::~ShaderProgram()
 	{
-		glDeleteProgram(m_ID);
+		glDeleteProgram(m_ID_);
 	}
 
 	bool ShaderProgram::IsCompiled() const
 	{
-		return m_isCompiled;
+		return m_isCompiled_;
 	}
 
 	void ShaderProgram::Use() const
 	{
-		glUseProgram(m_ID);
+		glUseProgram(m_ID_);
 	}
 
 	bool ShaderProgram::CreateShader(const std::string& source, const GLenum shaderType, GLuint& shaderID)
